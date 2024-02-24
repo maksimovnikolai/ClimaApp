@@ -23,7 +23,7 @@ final class WeatherManager {
     // MARK: Fetch Weather
     func fetchWeather(cityName: String, completion: @escaping (Result<WeatherModel, NetworkError>) -> Void) {
         
-        guard let urlString = URL(string: "\(API.weatherURL)?appid=\(API.key)&units=imperial&q=\(cityName)") else {
+        guard let urlString = URL(string: "\(API.weatherURL)?appid=\(API.key)&units=metric&q=\(cityName)") else {
             completion(.failure(.invalidURL))
             return
         }

@@ -13,21 +13,17 @@ final class WeatherView: UIView {
     lazy var navigationButton = makeButton("location.circle.fill")
     lazy var searchTextField = makeTextField()
     lazy var searchButton = makeButton("magnifyingglass")
-    
-    lazy var tempValueLabel = makeLabel(title: "21", font: .boldSystemFont(ofSize: 80))
-    lazy var tempMinCircleLabel = makeLabel(title: "°", font: .systemFont(ofSize: 100, weight: .light))
-    lazy var tempDegreeLabel = makeLabel(title: "C", font: .systemFont(ofSize: 100, weight: .light))
-    
-    lazy var cityLabel = makeLabel(title: "London", font: .systemFont(ofSize: 30))
-    
+    lazy var cityLabel = makeLabel(title: "City", font: .systemFont(ofSize: 30))
+    lazy var tempValueLabel = makeLabel(title: "0", font: .boldSystemFont(ofSize: 80))
+    lazy var conditionImageView = makeImageView(UIImage(systemName: "sun.max")!, mode: .scaleAspectFit)
+   
     // MARK: Private Properties
+    private lazy var tempMinCircleLabel = makeLabel(title: "°", font: .systemFont(ofSize: 100, weight: .light))
+    private lazy var tempDegreeLabel = makeLabel(title: "C", font: .systemFont(ofSize: 100, weight: .light))
     private lazy var backgroundImage = makeImageView(#imageLiteral(resourceName: "background"), mode: .scaleAspectFill)
-    private lazy var conditionImageView = makeImageView(UIImage(systemName: "sun.max")!, mode: .scaleAspectFit)
-    
     private lazy var searchStackView = setupSearchHStack()
     private lazy var tempStackView = setupTempHStack()
     private lazy var mainStackView = configureMainVStack()
-    
     private lazy var customView = makeView()
     
     // MARK: Init
@@ -41,7 +37,7 @@ final class WeatherView: UIView {
     }
 }
 
-// MARK: Private Methods
+// MARK: - Private Methods
 extension WeatherView {
     
     private func commonInit() {
@@ -51,7 +47,7 @@ extension WeatherView {
     }
 }
 
-// MARK: Stack Configuration
+// MARK: - Stack Configuration
 extension WeatherView {
     
     private func setupSearchHStack() -> UIStackView {
@@ -92,7 +88,7 @@ extension WeatherView {
     }
 }
 
-// MARK: UI Elements
+// MARK: - UI Elements
 extension WeatherView {
     
     private func makeImageView(_ image: UIImage, mode: UIView.ContentMode) -> UIImageView {
@@ -107,6 +103,7 @@ extension WeatherView {
         let tf = UITextField()
         tf.placeholder = "Search"
         tf.borderStyle = .roundedRect
+        tf.backgroundColor = .systemFill
         tf.textAlignment = .right
         tf.autocapitalizationType = .words
         tf.returnKeyType = .go
@@ -135,7 +132,7 @@ extension WeatherView {
     }
 }
 
-// MARK: Constraints
+// MARK: - Constraints
 extension WeatherView {
     
     private func setupImageConstraints() {

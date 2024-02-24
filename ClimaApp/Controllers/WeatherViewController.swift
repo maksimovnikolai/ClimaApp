@@ -41,7 +41,7 @@ extension WeatherViewController: UITextFieldDelegate {
         if weatherView.searchTextField.text != "" {
             return true
         } else {
-            textField.placeholder = "Введите Текст"
+            textField.placeholder = "Enter the city name"
             return false
         }
     }
@@ -52,7 +52,7 @@ extension WeatherViewController {
     
     private func commonInit() {
         addTarget()
-        fetchWeather(cityName: "Москва")
+        fetchWeather(cityName: "Moscow")
     }
     
     private func addTarget() {
