@@ -5,12 +5,15 @@
 //  Created by Nikolai Maksimov on 23.02.2024.
 //
 
+
 import UIKit
+import CoreLocation
 
 final class WeatherViewController: UIViewController {
     
     // MARK: Private Properties
     private let weatherView = WeatherView()
+    private let locationManager = CLLocationManager()
     
     // MARK: Life Cycle
     override func loadView() {
@@ -47,23 +50,60 @@ extension WeatherViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - CLLocationManagerDelegate
+extension WeatherViewController: CLLocationManagerDelegate {
+    
+    // определение местоположения
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            WeatherManager.shared.fetchWeather(latitude: lat, longitude: lon) { result in
+                switch result {
+                case .success(let weather):
+                    self.weatherView.tempValueLabel.text = weather.temperatureString
+                    self.weatherView.conditionImageView.image = UIImage(systemName: weather.conditionName)
+                    self.weatherView.cityLabel.text = weather.cityName
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error)
+    }
+}
+
 // MARK: Private Methods
 extension WeatherViewController {
     
     private func commonInit() {
+        configureCoreLocation()
         addTarget()
         fetchWeather(cityName: "Moscow")
+    }
+    
+    private func configureCoreLocation() {
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.delegate = self
     }
     
     private func addTarget() {
         weatherView.searchTextField.delegate = self
         weatherView.searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        weatherView.navigationButton.addTarget(self, action: #selector(locationPressed), for: .touchUpInside)
     }
     
     @objc
     private func searchButtonTapped() {
-        print("button was tapped")
         weatherView.searchTextField.endEditing(true)
+    }
+    
+    @objc
+    private func locationPressed() {
+        
     }
     
     
